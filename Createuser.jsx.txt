@@ -1,0 +1,55 @@
+import React, { useState } from 'react'
+import style from './home.module.css'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+const Createuser = () => {
+    let [name,setName]=useState()
+    let[sal,setSal]=useState()
+    let[com,setCom]=useState()
+    let navigate=useNavigate()
+    let n=(e)=>{
+        setName(e.target.value)
+    }
+    let s=(e)=>{
+        setSal(e.target.value)
+    }
+    let c=(e)=>{
+        setCom(e.target.value)
+    }
+   let formhandle=(e)=>{
+         e.preventDefault()
+        //  console.log(name,sal,com);
+         
+        let payload={
+            empName:name,
+            empSalary:sal,
+            empCompany:com
+        }
+
+        axios.post('http://localhost:3000/employee',payload)   //where we send,at what we send
+        .then(()=>{console.log('data send');})
+        .catch(()=>{console.log('error');})
+
+        navigate('/user')  //after submit it navigate direct to the page
+}
+  return (
+    <div id={style.div }>
+        <section id={style.box}>
+           
+        <form>
+        <h2>Create User</h2>
+            <label htmlFor="">Name:</label>
+            <input type="text" value={name} onChange={n} /> <br />
+            <label htmlFor="">Salary:</label>
+            <input type="text" value={sal} onChange={s} /><br />
+            <label htmlFor="">Company:</label>
+            <input type="text" value={com} onChange={c}/><br />
+            <button onClick={formhandle}>Submit</button>
+        </form>
+        </section>
+
+    </div>
+  )
+}
+
+export default Createuser

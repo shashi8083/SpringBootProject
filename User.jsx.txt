@@ -1,0 +1,55 @@
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import style from "./home.module.css"
+import { Link } from 'react-router-dom'
+const User = () => {
+  let[content,setContent]=useState([])
+  useEffect(()=>{
+      axios.get('http://localhost:3000/employee')
+      .then((Respone)=>{setContent(Respone.data);})
+      .catch(()=>{console.log('errorrr');})
+  },[])
+  let deletedata=(x)=>{
+    axios.delete(`http://localhost:3000/employee/${x}`)
+    window.location.assign('/user')
+}
+  return (
+ <div id={style.user}>
+     {content.map((x)=>{return(
+        <div>
+        <table>
+          <tr>
+            <td colSpan="2">
+                 Employee{x.id}
+            </td>
+          </tr>
+          <tr>
+            <td>Name</td>
+            <td>:{x.empName}</td>
+          </tr>
+          <tr>
+            <td>Salary</td>
+            <td>:{x.empSalary}</td>
+          </tr>
+          <tr>
+            <td>Company</td>
+            <td>:{x.empCompany}</td>
+          </tr>
+          <tr>
+             <td><button><Link to={`/edit/${x.id}`}>Edit</Link></button></td>     {/* backstick is not work html */}       
+              <td><button onClick={()=>{deletedata(x.id)}}>Delete</button></td> {/* directly we cannot call so we use callback */}
+          </tr>
+        </table>  
+
+
+
+      </div>
+     )})}
+        
+
+  </div>
+  )
+
+}
+
+export default User

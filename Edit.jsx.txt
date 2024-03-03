@@ -1,0 +1,76 @@
+import React, { useEffect, useState } from 'react'
+import style from "./home.module.css"
+import axios from 'axios'
+import { NavigationType, useNavigate, useParams } from 'react-router-dom'
+const Edit = () => {
+
+    let [name,setName]=useState("")
+    let [com,setCompany]=useState('')
+    let [sal,setSalary]=useState('')
+
+    let obj=useParams();  //we get obj(variable (id)) it go to the url take the id gives into obj
+    console.log(obj);
+    let navigation=useNavigate()
+
+    let nameData=(e)=>{
+        e.preventDefault();
+        setName(e.target.value)
+    }
+    let salData=(e)=>{
+        e.preventDefault();
+        setSalary(e.target.value)
+    }
+    let comData=(e)=>{
+        e.preventDefault();
+        setCompany(e.target.value)
+    }
+  
+    let updatedata=(e)=>{
+         e.preventDefault();
+        // console.log(name,sal,com);
+        let payload={
+            empName:name,
+            empCompany:com,
+            empSalary:sal
+        }
+
+        axios.put(`http://localhost:3000/employee/${obj.id}`,payload)
+        .then(()=>{console.log("Data Update");})
+        .catch(()=>{console.log('error');})
+         navigation('/User')
+  
+       
+    }
+    useEffect(()=>{
+        axios.get(`http://localhost:3000/employee/${obj.id}`)
+        .then((Response)=>{
+               setName(Response.data.empName);
+               setCompany(Response.data.empCompany);
+               setSalary(Response.data.empSalary)
+        })
+        .catch(()=>{console.log('error');})
+    },[])
+    
+  return (
+ 
+    <div>
+        <section id={style.box}>
+           
+        <form>
+        <h1>Edit User</h1>
+            <label htmlFor="">Name:</label>
+            <input type="text"  value={name} onChange={nameData} /> <br />
+            <label htmlFor="">Salary:</label>
+            <input type="text"  value={sal} onChange={salData}/><br />
+            <label htmlFor="">Company:</label>
+            <input type="text" value={com} onChange={comData}/><br />
+            <button onClick={updatedata}>Update</button>
+       
+        </form>
+        </section>
+
+    </div>
+  )
+}
+
+export default Edit

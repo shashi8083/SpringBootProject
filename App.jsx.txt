@@ -1,0 +1,23 @@
+import React from 'react'
+import Home from './CRUD/Home'
+import { BrowserRouter,Routes,Route } from 'react-router-dom'
+import Createuser from './CRUD/Createuser'
+import User from './CRUD/User'
+import Edit from './CRUD/Edit'
+const App = () => {
+  return (
+    <div>
+         <BrowserRouter>
+           <Home/>
+           <Routes>
+                <Route element={<Createuser/>} path='/'></Route>
+                <Route element={<User/>} path='/user'></Route>
+                <Route element={<Edit/>} path='/edit/:id'></Route>  {/* we can add the variable by using : */}
+           </Routes>
+         </BrowserRouter>
+      </div>
+  )
+}
+
+
+export default App
